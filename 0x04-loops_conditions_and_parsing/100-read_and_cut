@@ -1,0 +1,7 @@
+#!/isr/bin/env bash
+#displays contents of /etc/passwd
+#displays only username, userid and user home directory path
+
+while read -r passwd; do
+  echo "$passwd" | cut -d ':' -f1,3,6
+done < "/etc/passwd"
