@@ -1,4 +1,4 @@
-#!/usr/bun/env bash
-#displays all active IPv4 IPs on the machine its executed
+#!/usr/bin/env bash
+# Displays all acive IPv4 addresses.
 
-hostname -I
+ip address | grep -Eo "inet (addr:)?([0-9]*\.){3}[0-9]*" | cut -d " " -f 2 -s
