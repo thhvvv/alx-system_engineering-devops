@@ -5,6 +5,7 @@ import json
 import requests
 
 def fetch_user_data():
+
     url = "https://jsonplaceholder.typicode.com/"
 
     users = requests.get(url + "users").json()
@@ -25,10 +26,9 @@ def fetch_user_data():
                     "completed": todo.get("completed"),
                     "username": user.get("username")
                     }
-            data_to_export[user_id].append(task_info)
+        data_to_export[user_id].append(task_info)
         
         return data_to_export
-
 if __name__ == "__main__":
     data_to_export = fetch_user_data()
 
