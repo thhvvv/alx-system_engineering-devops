@@ -3,33 +3,34 @@
 
 import json
 import requests
-import sys
 
+def fetch_user_data():
+    url = "https://jsonplaceholder.typicode.com/"
 
-if __name__ == '__main__':
-    url = "https://jsonplaceholder.typicode.com/users"
+    users = requests.get(url + "users").json()
 
-    resp = requests.get(url)
-    Users = resp.json()
+    data_to_export = {}
 
-    users_dict = {}
-    for user in Users:
-        USER_ID = user.get('id')
-        USERNAME = user.get('username')
-        url = 'https://jsonplaceholder.typicode.com/users/{}'.format(USER_ID)
-        url = url + '/todos/'
-        resp = requests.get(url)
+    for user in users:
+        user_id = user["id"]
 
-        tasks = resp.json()
-        users_dict[USER_ID] = []
-        for task in tasks:
-            TASK_COMPLETED_STATUS = task.get('completed')
-            TASK_TITLE = task.get('title')
-            users_dict[USER_ID].append({
-                "task": TASK_TITLE,
-                "completed": TASK_COMPLETED_STATUS,
-                "username": USERNAME
-            })
-            """A little Something"""
-    with open('todo_all_employees.json', 'w') as f:
-        json.dump(users_dict, f)
+        todo_response = requests.get(url + f"todos?userId={user_id}")
+        todo_list = todo_response.json()
+
+        data_to_export[user_id] = []
+
+        for todo in todo_list:
+            task_info = {
+                    "task": todo.get("title"),
+                    "completed": todo.get("completed"),
+                    "username": user.get("username")
+                    }
+            data_to_export[user_id].append(task_info)
+        
+        return data_to_export
+
+if __name__ == "__main__":
+    data_to_export = fetch_user_data()
+
+    with open("todo_all_employees.json", "w") as jsonfile:
+        json.dump(data_to_export, jsonfile, indent=4)
