@@ -1,9 +1,24 @@
 #!/usr/bin/env bash
 
-# configure nginx to port 80, creates symbolic link between nginx conf file andenabled sites dir
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+# Ensure nginx is installed
+if ! command -v nginx &> /dev/null
+then
+    echo "nginx could not be found, installing..."
+    sudo apt-get update
+    sudo apt-get install -y nginx
+fi
 
+# Ensure the necessary directories exist
+if [ ! -d "/etc/nginx/sites-enabled" ]; then
+    echo "Creating /etc/nginx/sites-enabled directory..."
+    sudo mkdir -p /etc/nginx/sites-enabled
+fi
+
+# Configure nginx to port 80, creates symbolic link between nginx conf file and enabled sites dir
+sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
+
+# Restart nginx service
 sudo service nginx restart
 
-#terminate the first nginx pid
-kill "$(pgrep 'nginx' | head -1)"
+# Terminate the first nginx PID if it exists
+echo "" | sudo dd status=none of=/run/nginx.pid
