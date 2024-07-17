@@ -3,7 +3,7 @@
 # configure nginx to port 80, creates symbolic link between nginx conf file andenabled sites dir
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-service nginx restart
+sudo service nginx restart
 
 #terminate the first nginx pid
 kill "$(pgrep 'nginx' | head -1)"
