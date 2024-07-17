@@ -1,19 +1,5 @@
 #!/usr/bin/env bash
 
-# Ensure nginx is installed
-if ! command -v nginx &> /dev/null
-then
-    echo "nginx could not be found, installing..."
-    sudo apt-get update
-    sudo apt-get install -y nginx
-fi
-
-# Ensure the necessary directories exist
-if [ ! -d "/etc/nginx/sites-enabled" ]; then
-    echo "Creating /etc/nginx/sites-enabled directory..."
-    sudo mkdir -p /etc/nginx/sites-enabled
-fi
-
 # Configure nginx to port 80, creates symbolic link between nginx conf file and enabled sites dir
 sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
 
