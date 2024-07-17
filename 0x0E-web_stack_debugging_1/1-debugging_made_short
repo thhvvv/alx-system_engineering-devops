@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
-
-# Configure nginx to port 80, creates symbolic link between nginx conf file and enabled sites dir
+# Configure nginx to port 80
 sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
-
-# Restart nginx service
 sudo service nginx restart
-
-# Terminate the first nginx PID if it exists
 echo "" | sudo dd status=none of=/run/nginx.pid
